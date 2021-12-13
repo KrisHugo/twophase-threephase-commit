@@ -12,8 +12,8 @@
 <body>
 
 <!-- <div class="container pt-3"> -->
-<div class="card container-sm">
-  <div class="card-header">
+<div class="card container-sm" style="border-radius: 5px;">
+  <div class="card-header" style="margin: 0 -12px;">
     <h2>Coordinator</h2>
   </div>
   <div class="card-body">
@@ -23,24 +23,25 @@
 
         <!-- Prepare -->
         {% for v in values %}
-        <form class="col-sm-6 mt-3" action="/three-phase/prepare/{{ v.key }}" method="get">
+        <form class="col-sm-12 col-md-6 mt-3" action="/three-phase/prepare/{{ v.key }}" method="get">
           <div class="row g-3 align-items-enter">
-            <div class="col-auto">
+            <div class="col-3" style="min-width: 70px; text-align: center;">
               <label for="{{ v.key }}1" class="col-form-label">{{ v.key }}</label>
             </div>
-            <div class="col-auto">
+            <div class="col-6">
               <input type="text" id="{{ v.key }}1" name="{{ v.key }}" class="form-control">
             </div>
-            <div class="col-auto">
-              <input type="submit" class="btn btn-primary" value="Prepare">
+            <div class="col-3">
+              <input type="submit" class="btn btn-primary" style="border-radius: 15px;" value="Prepare">
             </div>
           </div>
         </form>
         {% endfor %}
-
-        <!-- Commit -->
-        <a class="col-sm-6 mt-3 ml-3 btn btn-success" href="/three-phase/pre_commit">PreCommit</a>
-        <a class="col-sm-6 mt-3 ml-3 btn btn-success" href="/three-phase/commit">Commit</a>
+        <!-- PreCommit & Commit -->
+        <div class="box" style="display: flex; justify-content: space-around;">
+          <a class="col-sm-3 mt-3 btn btn-warning" style="border-radius: 15px;" role="button" href="/three-phase/pre_commit">PreCommit</a>
+          <a class="col-sm-3 mt-3 btn btn-success" style="border-radius: 15px;" role="button" href="/three-phase/commit">Commit</a>  
+        </div>
       </div>
     </div>
 
@@ -49,54 +50,50 @@
 
   <div class="container pt-3">
     <div class="row">
-
       <!-- Show participants -->
       {% for p in participants %}
-      <div class="container mblank-2 col-sm-3">
+      <div class="container mt-3 col-sm-12 col-md-6 col-lg-4">
         <div class="card">
           <!-- header -->
           <div class="card-header container">
             <div class="row">
-              <h5 class="col-6">{{ p.name }}</h5>
+              <h5 class="col-6">name: {{ p.name }}</h5>
                 <h5 class="col-6">
+                  <span>State:</span>
                   {% if p.state == 0 %}
-                  <div class="text-success">Normal</div>
+                  <span class="text-success">Normal</span>
                   {% elif p.state == 1 %}
-                  <div class="text-info">Prepare</div>
+                  <span class="text-info">Prepare</span>
                   {% elif p.state == 2 %}
-                  <div class="text-info">Prepared</div>
+                  <span class="text-info">Prepared</span>
                   {% elif p.state == 3 %}
-                  <div class="text-info">PreCommit</div>
+                  <span class="text-info">PreCommit</span>
                   {% elif p.state == 4 %}
-                  <div class="text-info">PreCommitted</div>
+                  <span class="text-info">PreCommitted</span>
                   {% endif %}
                 </h5>
             </div>
           </div>
           <!-- body -->
-          <div class="card-body">
-            <ul>
+          <div class="card-body box">
             {% for v in p.values %}
-              <li>
-                <ul>
-                  <li>Key: {{ v.key }}</li>
-                  <li>Value: {{ v.value }}</li>
-                  <!-- <li>pValue: {{ v.prepared_value }}</li> -->
-                </ul>
-              </li>
+            <div class="col-12">
+              <ul>
+                <li style="display: flex; font-size: 20px;">Key: {{ v.key }}</li>
+                <li style="display: flex; font-size: 20px;">Value: {{ v.value }}</li>
+              </ul>
+            </div>
+            
             {% endfor %}
-            </ul>
           </div>
           <!-- footer -->
+          <div class="card-footer" style="display: flex; justify-content: space-around;">
           {% if p.state == 1 %}
-          <div class="card-footer">
-            <a class="btn btn-primary" href="/three-phase/prepared/{{ p.name }}">Prepared</a>
-          </div>
+            <a class="btn btn-primary" style="border-radius: 15px;"  href="/three-phase/prepared/{{ p.name }}">Prepared</a>
           {% elif p.state == 3 %}
-          <div class="card-footer">
-            <a class="btn btn-primary" href="/three-phase/pre_committed/{{ p.name }}">PreCommitted</a>
-          </div>
+            <a class="btn btn-primary" style="border-radius: 15px;"  href="/three-phase/pre_committed/{{ p.name }}">PreCommitted</a>
           {% endif %}
+          </div>
         </div>
       </div>
       {% endfor %}
